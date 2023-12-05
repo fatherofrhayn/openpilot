@@ -150,7 +150,7 @@ void OnroadWindow::mousePressEvent(QMouseEvent* e) {
       clickTimer.stop();
       if (scene.conditional_experimental) {
         const int override_value = (scene.conditional_status >= 1 && scene.conditional_status <= 4) ? 0 : scene.conditional_status >= 5 ? 3 : 4;
-        paramsMemory.putIntNonBlocking("ConditionalStatus", override_value);
+        paramsMemory.putIntNonBlocking("CEStatus", override_value);
       } else {
         const bool experimentalMode = params.getBool("ExperimentalMode");
         params.putBoolNonBlocking("ExperimentalMode", !experimentalMode);
