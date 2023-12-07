@@ -71,13 +71,30 @@ class Soundd:
     self.spl_filter_weighted = FirstOrderFilter(0, 2.5, FILTER_DT, initialized=False)
 
   def load_sounds(self):
+    isCustomTheme = self.params.get_bool("CustomTheme")
+    customSounds = self.params.get_int("CustomSounds") if isCustomTheme else 0
+
+    themeConfiguration = {
+      0: "stock",
+      1: "frog_theme",
+      2: "tesla_theme",
+      3: "stalin_theme"
+    }
+
+    soundPaths = {}
+    for key, themeName in themeConfiguration.items():
+      base = f"{BASEDIR}/selfdrive/assets/sounds" if themeName == "stock" else f"{BASEDIR}/selfdrive/assets/custom_themes/{themeName}/sounds"
+      soundPaths[key] = base
+
     self.loaded_sounds: Dict[int, np.ndarray] = {}
+
+    sound_dir = soundPaths.get(customSounds, f"{BASEDIR}/selfdrive/assets/sounds")
 
     # Load all sounds
     for sound in sound_list:
       filename, play_count, volume = sound_list[sound]
 
-      wavefile = wave.open(BASEDIR + "/selfdrive/assets/sounds/" + filename, 'r')
+      wavefile = wave.open(sound_dir + "/" + filename, 'r')
 
       assert wavefile.getnchannels() == 1
       assert wavefile.getsampwidth() == 2
