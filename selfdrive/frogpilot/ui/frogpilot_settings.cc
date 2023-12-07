@@ -26,9 +26,9 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(QWidget *parent) : FrogPilotPanel
     {"MTSCEnabled", "Map Turn Speed Control", "When enabled, the car will slow down when it predicts a lateral acceleration greater than 2.0 m/s^2.", "../frogpilot/assets/toggle_icons/icon_speed_map.png"},
     {"NudgelessLaneChange", "Nudgeless Lane Change", "Switch lanes without having to nudge the steering wheel.", "../frogpilot/assets/toggle_icons/icon_lane.png"},
     {"PauseLateralOnSignal", "Pause Lateral On Turn Signal", "Pauses lateral control when a turn signal is active.", "../frogpilot/assets/toggle_icons/icon_pause_lane.png"},
-    {"SpeedLimitController", "Speed Limit Controller", "Use Open Street Maps, Navigate On openpilot, and your car's dashboard (Toyota only) to set the vehicle's speed to the current speed limit.", "../frogpilot/assets/toggle_icons/icon_speed_limit.png"},
+    {"SpeedLimitController", "Speed Limit Controller", "Use Open Street Maps, Navigate On openpilot, and your car's dashboard (Toyota only) to set the vehicle's speed to the current speed limit.", "../assets/offroad/icon_speed_limit.png"},
     {"TurnDesires", "Turn Desires", "Use turn desires when below the minimum lane change speed for more precise turns.", "../assets/navigation/direction_continue_right.png"},
-    {"VisionTurnControl", "Vision Turn Speed Control", "Automatically adjusts the vehicle's speed in accordance of the curvature of the road for smoother turning.", "../assets/offroad/icon_vtc.png"}
+    {"VisionTurnControl", "Vision Turn Speed Control", "Automatically adjusts the vehicle's speed in accordance of the curvature of the road for smoother turning.", "../frogpilot/assets/toggle_icons/icon_vtc.png"}
   };
 
   for (const auto &[key, label, desc, icon] : toggles) {
@@ -229,7 +229,7 @@ FrogPilotVisualsPanel::FrogPilotVisualsPanel(QWidget *parent) : FrogPilotPanel(p
     {"CustomTheme", "Custom Theme", "Enable the ability to use custom themes.", "../frogpilot/assets/wheel_images/frog.png"},
     {"CameraView", "Camera View (Cosmetic Only)", "Set your preferred camera view for the onroad UI. This toggle is purely cosmetic and will not affect openpilot's use of the other cameras.", "../frogpilot/assets/toggle_icons/icon_camera.png"},
     {"Compass", "Compass", "Add a compass to the onroad UI that indicates your current driving direction.", "../frogpilot/assets/toggle_icons/icon_compass.png"},
-    {"CustomUI", "Custom UI", "Customize the UI to your liking.", "../frogpilot/assets/toggle_icons/icon_road.png"},
+    {"CustomUI", "Custom UI", "Customize the UI to your liking.", "../assets/offroad/icon_road.png"},
     {"DriverCamera", "Driver Camera On Reverse", "Displays the driver camera when in reverse.", "../assets/img_driver_face_static.png"},
     {"GreenLightAlert", "Green Light Alert", "Displays an alert when a light turns from red to green.", "../frogpilot/assets/toggle_icons/icon_green_light.png"},
     {"RotatingWheel", "Rotating Steering Wheel", "The steering wheel in top right corner of the onroad UI rotates alongside your physical steering wheel.", "../frogpilot/assets/toggle_icons/icon_rotate.png"},

@@ -197,7 +197,7 @@ ParamController(AccelerationProfile, "AccelerationProfile", "   Acceleration Pro
   return std::clamp(v, 1, 3);
 )
 
-ParamController(AdjustablePersonalities, "AdjustablePersonalities", "Adjustable Personalities", "Switch personalities using the 'Distance' button on the steering wheel (GM/Lexus/Toyota Only) or via the onroad UI for other makes.\n\n1 bar = Aggressive\n2 bars = Standard\n3 bars = Relaxed", "../assets/offroad/icon_distance.png",
+ParamController(AdjustablePersonalities, "AdjustablePersonalities", "Adjustable Personalities", "Switch personalities using the 'Distance' button on the steering wheel (GM/Lexus/Toyota Only) or via the onroad UI for other makes.\n\n1 bar = Aggressive\n2 bars = Standard\n3 bars = Relaxed", "../frogpilot/assets/toggle_icons/icon_distance.png",
   const int selection = params.getInt("AdjustablePersonalities");
   return selection == 0 ? "None" : selection == 1 ? "Wheel" : selection == 2 ? "UI" : "Wheel + UI";,
   return v >= 0 ? v % 4 : 3;
@@ -208,12 +208,12 @@ ParamController(AggressiveJerk, "AggressiveJerk", "Jerk Value", "Set the jerk va
   return std::clamp(v, 1, 50);
 )
 
-ParamController(AggressiveFollow, "AggressiveFollow", "Time", "Set the following distance for the 'Aggressive Personality'.\n\nValue represents the time (in seconds) to follow the lead vehicle.\n\nStock has a value of 1.25.", "../assets/aggressive.png",
+ParamController(AggressiveFollow, "AggressiveFollow", "Time", "Set the following distance for the 'Aggressive Personality'.\n\nValue represents the time (in seconds) to follow the lead vehicle.\n\nStock has a value of 1.25.", "../frogpilot/assets/other_images/aggressive.png",
   return QString::number(params.getInt("AggressiveFollow") / 10.0) + " sec";,
   return std::clamp(v, 10, 50);
 )
 
-ParamController(CameraView, "CameraView", "Camera View (Cosmetic Only)", "Set your preferred camera view for the onroad UI. This toggle is purely cosmetic and will not affect openpilot's use of the other cameras.", "frogpilot/assets/toggle_icons/icon_camera.png",
+ParamController(CameraView, "CameraView", "Camera View (Cosmetic Only)", "Set your preferred camera view for the onroad UI. This toggle is purely cosmetic and will not affect openpilot's use of the other cameras.", "../frogpilot/assets/toggle_icons/icon_camera.png",
   const int camera = params.getInt("CameraView");
   return camera == 0 ? "Auto" : camera == 1 ? "Standard" : camera == 2 ? "Wide" : "Driver";,
   return v >= 0 ? v % 4 : 3;
@@ -260,7 +260,7 @@ ParamController(CustomSounds, "CustomSounds", "Sounds", "Replace the stock openp
   return v >= 0 ? v % 4 : 3;
 )
 
-ParamController(DeviceShutdown, "DeviceShutdown", "Device Shutdown Timer", "Set the timer for when the device turns off after being offroad to reduce energy waste and prevent battery drain.", "../assets/offroad/icon_time.png",
+ParamController(DeviceShutdown, "DeviceShutdown", "Device Shutdown Timer", "Set the timer for when the device turns off after being offroad to reduce energy waste and prevent battery drain.", "../frogpilot/assets/toggle_icons/icon_time.png",
   const int time = params.getInt("DeviceShutdown");
   return time == 0 ? "Instant" : (time > 0 && time <= 3) ? QString::number(time * 15) + " mins" : QString::number(time - 3) + (time == 4 ? " hour" : " hours");,
   return std::clamp(v, 0, 33);
@@ -283,12 +283,12 @@ ParamController(Model, "Model", "Model Selector (Requires Reboot)", "Select your
   return v >= 0 ? v % 3 : 2;
 )
 
-ParamController(Offset1, "Offset1", "  0-34", "Set the speed limit offset when the speed limit is between 0 and 34 mph.", "../assets/icon_blank.png",
+ParamController(Offset1, "Offset1", "0-34", "Set the speed limit offset when the speed limit is between 0 and 34 mph.", "../assets/icon_blank.png",
   return QString::number(params.getInt("Offset1")) + " mph";,
   return std::clamp(v, 0, 99);
 )
 
-ParamController(Offset1Metric, "Offset1", "  0-54", "Set the speed limit offset when the speed limit is between 0 and 34 mph.", "../assets/icon_blank.png",
+ParamController(Offset1Metric, "Offset1", "0-54", "Set the speed limit offset when the speed limit is between 0 and 34 mph.", "../assets/icon_blank.png",
   return QString::number(params.getInt("Offset1")) + " kph";,
   return std::clamp(v, 0, 99);
 )
@@ -338,7 +338,7 @@ ParamController(RelaxedJerk, "RelaxedJerk", "Jerk Value", "Set the jerk value fo
   return std::clamp(v, 1, 50);
 )
 
-ParamController(RelaxedFollow, "RelaxedFollow", "Time", "Set the following distance for the 'Relaxed Personality'.\n\nValue represents the time (in seconds) to follow the lead vehicle.\n\nStock has a value of 1.75.", "../assets/relaxed.png",
+ParamController(RelaxedFollow, "RelaxedFollow", "Time", "Set the following distance for the 'Relaxed Personality'.\n\nValue represents the time (in seconds) to follow the lead vehicle.\n\nStock has a value of 1.75.", "../frogpilot/assets/other_images/relaxed.png",
   return QString::number(params.getInt("RelaxedFollow") / 10.0) + " sec";,
   return std::clamp(v, 10, 50);
 )
@@ -348,7 +348,7 @@ ParamController(RoadEdgesWidth, "RoadEdgesWidth", "Road Edges", "Customize the r
   return std::clamp(v, 0, isMetric ? 60 : 24);
 )
 
-ParamController(ScreenBrightness, "ScreenBrightness", "Screen Brightness", "Set a custom screen brightness level or use the default 'Auto' brightness setting.", "frogpilot/assets/toggle_icons/icon_light.png",
+ParamController(ScreenBrightness, "ScreenBrightness", "Screen Brightness", "Set a custom screen brightness level or use the default 'Auto' brightness setting.", "../frogpilot/assets/toggle_icons/icon_light.png",
   const int brightness = params.getInt("ScreenBrightness");
   uiState()->scene.screen_brightness = brightness;
   return brightness == 101 ? "Auto" : brightness == 0 ? "Off" : QString::number(brightness) + "%";,
@@ -388,7 +388,7 @@ ParamController(StandardJerk, "StandardJerk", "Jerk Value", "Set the jerk value 
   return std::clamp(v, 1, 50);
 )
 
-ParamController(StandardFollow, "StandardFollow", "Time", "Set the following distance for the 'Standard Personality'.\n\nValue represents the time (in seconds) to follow the lead vehicle.\n\nStock has a value of 1.45.", "../assets/standard.png",
+ParamController(StandardFollow, "StandardFollow", "Time", "Set the following distance for the 'Standard Personality'.\n\nValue represents the time (in seconds) to follow the lead vehicle.\n\nStock has a value of 1.45.", "../frogpilot/assets/other_images/standard.png",
   return QString::number(params.getInt("StandardFollow") / 10.0) + " sec";,
   return std::clamp(v, 10, 50);
 )
