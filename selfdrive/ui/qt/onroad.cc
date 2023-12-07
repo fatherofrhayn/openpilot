@@ -484,6 +484,14 @@ AnnotatedCameraWidget::AnnotatedCameraWidget(VisionStreamType type, QWidget* par
   main_layout->addWidget(personality_btn, 0, Qt::AlignBottom | Qt::AlignLeft);
 
   initializeFrogPilotWidgets();
+
+  // Initialize the timer for the turn signal animation
+  QTimer *animationTimer = new QTimer(this);
+  connect(animationTimer, &QTimer::timeout, this, [this] {
+    animationFrameIndex = (animationFrameIndex + 1) % totalFrames;
+    update();
+  });
+  animationTimer->start(totalFrames * 11); // 440 milliseconds per loop; syncs up perfectly with my 2019 Lexus ES 350 turn signal clicks
 }
 
 void AnnotatedCameraWidget::updateState(const UIState &s) {
@@ -521,7 +529,7 @@ void AnnotatedCameraWidget::updateState(const UIState &s) {
   has_eu_speed_limit = (nav_alive && speed_limit_sign == cereal::NavInstruction::SpeedLimitSign::VIENNA);
   is_metric = s.scene.is_metric;
   speedUnit =  s.scene.is_metric ? tr("km/h") : tr("mph");
-  hideBottomIcons = (cs.getAlertSize() != cereal::ControlsState::AlertSize::NONE || customSignals && (turnSignalLeft || turnSignalRight) || showDriverCamera);
+  hideBottomIcons = (cs.getAlertSize() != cereal::ControlsState::AlertSize::NONE || customSignals && (turnSignalLeft || turnSignalRight));
   status = s.status;
 
   // update engageability/experimental mode button
@@ -665,9 +673,6 @@ void AnnotatedCameraWidget::drawHud(QPainter &p) {
   }
 
   p.restore();
-
-  // Update FrogPilot widgets
-  updateFrogPilotWidgets(p);
 }
 
 void AnnotatedCameraWidget::drawText(QPainter &p, int x, int y, const QString &text, int alpha) {
@@ -1101,6 +1106,9 @@ void AnnotatedCameraWidget::paintEvent(QPaintEvent *event) {
     }
 
     drawHud(painter);
+
+    // Update FrogPilot widgets
+    updateFrogPilotWidgets(painter);
   }
 
   double cur_draw_t = millis_since_boot();
@@ -1151,14 +1159,6 @@ void AnnotatedCameraWidget::initializeFrogPilotWidgets() {
                                                             {0.5, QBrush(QColor::fromHslF(0 / 360., 1.0, 0.5, 0.5))},
                                                             {1.0, QBrush(QColor::fromHslF(0 / 360., 1.0, 0.5, 0.1))}}}}}
   };
-
-  // Initialize the timer for the turn signal animation
-  QTimer *animationTimer = new QTimer(this);
-  connect(animationTimer, &QTimer::timeout, this, [this] {
-    animationFrameIndex = (animationFrameIndex + 1) % totalFrames;
-    update();
-  });
-  animationTimer->start(totalFrames * 11); // 440 milliseconds per loop; syncs up perfectly with my 2019 Lexus ES 350 turn signal clicks
 
   // Initialize the timer for the screen recorder
   QTimer *record_timer = new QTimer(this);
@@ -1226,7 +1226,7 @@ void AnnotatedCameraWidget::updateFrogPilotWidgets(QPainter &p) {
     bottom_layout->setAlignment(compass_img, (rightHandDM ? Qt::AlignLeft : Qt::AlignRight));
   }
 
-  const bool enablePersonalityButton = compass && !hideBottomIcons && !scene.show_driver_camera;
+  const bool enablePersonalityButton = compass && !hideBottomIcons;
   personality_btn->setVisible(enablePersonalityButton);
   if (enablePersonalityButton) {
     if (paramsMemory.getBool("PersonalityChangedViaWheel")) {
