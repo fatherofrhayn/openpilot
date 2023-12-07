@@ -71,30 +71,13 @@ class Soundd:
     self.spl_filter_weighted = FirstOrderFilter(0, 2.5, FILTER_DT, initialized=False)
 
   def load_sounds(self):
-    isCustomTheme = self.params.get_bool("CustomTheme")
-    customSounds = self.params.get_int("CustomSounds") if isCustomTheme else 0
-
-    themeConfiguration = {
-      0: "stock",
-      1: "frog_theme",
-      2: "tesla_theme",
-      3: "stalin_theme"
-    }
-
-    soundPaths = {}
-    for key, themeName in themeConfiguration.items():
-      base = f"{BASEDIR}/selfdrive/assets/sounds" if themeName == "stock" else f"{BASEDIR}/selfdrive/frogpilot/assets/custom_themes/{themeName}/sounds"
-      soundPaths[key] = base
-
     self.loaded_sounds: Dict[int, np.ndarray] = {}
-
-    sound_dir = soundPaths.get(customSounds, f"{BASEDIR}/selfdrive/assets/sounds")
 
     # Load all sounds
     for sound in sound_list:
       filename, play_count, volume = sound_list[sound]
 
-      wavefile = wave.open(sound_dir + "/" + filename, 'r')
+      wavefile = wave.open(self.sound_directory + filename, 'r')
 
       assert wavefile.getnchannels() == 1
       assert wavefile.getsampwidth() == 2
@@ -184,6 +167,21 @@ class Soundd:
 
   def update_frogpilot_params(self):
     self.silent_mode = self.params.get_bool("SilentMode")
+
+    custom_theme = self.params.get_bool("CustomTheme")
+    custom_sounds = self.params.get_int("CustomSounds") if custom_theme else 0
+
+    theme_configuration = {
+      0: "stock",
+      1: "frog_theme",
+      2: "tesla_theme",
+      3: "stalin_theme"
+    }
+
+    theme_name = theme_configuration.get(custom_sounds, "stock")
+    self.sound_directory = (f"{BASEDIR}/selfdrive/frogpilot/assets/custom_themes/{theme_name}/sounds/" if custom_sounds else f"{BASEDIR}/selfdrive/assets/sounds/")
+
+    self.load_sounds()
 
 def main():
   s = Soundd()
