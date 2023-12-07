@@ -83,7 +83,7 @@ class Soundd:
 
     soundPaths = {}
     for key, themeName in themeConfiguration.items():
-      base = f"{BASEDIR}/selfdrive/assets/sounds" if themeName == "stock" else f"{BASEDIR}/selfdrive/assets/custom_themes/{themeName}/sounds"
+      base = f"{BASEDIR}/selfdrive/assets/sounds" if themeName == "stock" else f"{BASEDIR}/selfdrive/frogpilot/assets/custom_themes/{themeName}/sounds"
       soundPaths[key] = base
 
     self.loaded_sounds: Dict[int, np.ndarray] = {}

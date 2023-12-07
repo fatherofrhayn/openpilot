@@ -200,7 +200,7 @@ def main() -> None:
     os.remove("/data/openpilot/prebuilt")
 
   # Set the desired model on boot
-  subprocess.run(["python3", "/data/openpilot/selfdrive/modeld/model_switcher.py"])
+  subprocess.run(["python3", "/data/openpilot/selfdrive/frogpilot/functions/model_switcher.py"])
 
   # Start UI early so prepare can happen in the background
   if not prepare_only:

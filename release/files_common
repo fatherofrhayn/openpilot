@@ -332,7 +332,6 @@ selfdrive/manager/test/test_manager.py
 selfdrive/modeld/.gitignore
 selfdrive/modeld/__init__.py
 selfdrive/modeld/SConscript
-selfdrive/modeld/model_switcher.py
 selfdrive/modeld/modeld.py
 selfdrive/modeld/parse_model_outputs.py
 selfdrive/modeld/fill_model_msg.py
@@ -584,6 +583,7 @@ tinygrad_repo/tinygrad/runtime/ops_gpu.py
 tinygrad_repo/tinygrad/shape/*
 tinygrad_repo/tinygrad/*.py
 
-frogpilot/functions/conditional_experimental_mode.py
-frogpilot/functions/map_turn_speed_controller.py
-frogpilot/functions/speed_limit_controller.py
+selfdrive/frogpilot/functions/conditional_experimental_mode.py
+selfdrive/frogpilot/functions/map_turn_speed_controller.py
+selfdrive/frogpilot/functions/model_switcher.py
+selfdrive/frogpilot/functions/speed_limit_controller.py
