@@ -412,7 +412,14 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
   close_btn->setFixedSize(300, 125);
   sidebar_layout->addSpacing(10);
   sidebar_layout->addWidget(close_btn, 0, Qt::AlignRight);
-  QObject::connect(close_btn, &QPushButton::clicked, this, &SettingsWindow::closeSettings);
+  QObject::connect(close_btn, &QPushButton::clicked, [this]() {
+    if (paramsMemory.getBool("FrogPilotTogglesOpen")) {
+      paramsMemory.putBool("CloseFrogPilotParents", true);
+      paramsMemory.putBool("FrogPilotTogglesOpen", false);
+    } else {
+      this->closeSettings();
+    }
+  });
 
   // setup panels
   DevicePanel *device = new DevicePanel(this);

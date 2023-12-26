@@ -17,7 +17,6 @@ private:
   void setDefaults();
   void updateMetric();
 
-  ButtonControl *backButton;
   ButtonControl *slscPriorityButton;
   ButtonIconControl *modelSelectorButton;
   DualParamValueControl *conditionalSpeedsImperial;

@@ -6,12 +6,6 @@
 #include "selfdrive/ui/ui.h"
 
 FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : ListWidget(parent) {
-  backButton = new ButtonControl(tr(""), tr("BACK"));
-  connect(backButton, &ButtonControl::clicked, [this]() {
-    hideSubToggles();
-  });
-  addItem(backButton);
-
   const std::vector<std::tuple<QString, QString, QString, QString>> controlToggles {
     {"AdjustablePersonalities", "Adjustable Personalities", "Use the 'Distance' button on the steering wheel or the onroad UI to switch between openpilot's driving personalities.\n\n1 bar = Aggressive\n2 bars = Standard\n3 bars = Relaxed", "../frogpilot/assets/toggle_icons/icon_distance.png"},
 
@@ -335,6 +329,13 @@ FrogPilotControlsPanel::FrogPilotControlsPanel(SettingsWindow *parent) : ListWid
 }
 
 void FrogPilotControlsPanel::updateMetric() {
+  if (isVisible()) {
+    if (paramsMemory.getBool("CloseFrogPilotParents")) {
+      hideSubToggles();
+      paramsMemory.putBool("CloseFrogPilotParents", false);
+    }
+  }
+
   std::thread([this] {
     static bool checkedOnBoot = false;
 
@@ -415,7 +416,7 @@ void FrogPilotControlsPanel::updateMetric() {
 }
 
 void FrogPilotControlsPanel::parentToggleClicked() {
-  backButton->setVisible(true);
+  paramsMemory.putBool("FrogPilotTogglesOpen", true);
   conditionalSpeedsImperial->setVisible(false);
   conditionalSpeedsMetric->setVisible(false);
   modelSelectorButton->setVisible(false);
@@ -423,7 +424,6 @@ void FrogPilotControlsPanel::parentToggleClicked() {
 }
 
 void FrogPilotControlsPanel::hideSubToggles() {
-  backButton->setVisible(false);
   conditionalSpeedsImperial->setVisible(false);
   conditionalSpeedsMetric->setVisible(false);
   modelSelectorButton->setVisible(true);
@@ -446,6 +446,8 @@ void FrogPilotControlsPanel::hideSubToggles() {
 }
 
 void FrogPilotControlsPanel::hideEvent(QHideEvent *event) {
+  paramsMemory.putBool("FrogPilotTogglesOpen", false);
+
   hideSubToggles();
 }
 
