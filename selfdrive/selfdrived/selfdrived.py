@@ -360,6 +360,9 @@ class SelfdriveD:
       if self.sm['modelV2'].frameDropPerc > 20:
         self.events.add(EventName.modeldLagging)
 
+    if any(not be.pressed and be.type == ButtonType.lkas for be in CS.buttonEvents):
+      self.params.put_bool_nonblocking('SEMIPILOT_SteerAlwaysOn', not self.params.get_bool('SEMIPILOT_SteerAlwaysOn'))
+
     # decrement personality on distance button press
     if self.CP.openpilotLongitudinalControl:
       if any(not be.pressed and be.type == ButtonType.gapAdjustCruise for be in CS.buttonEvents):
