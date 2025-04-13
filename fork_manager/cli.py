@@ -16,7 +16,7 @@ from health import run_health_check, repair_all
 from profile_manager import list_profiles, activate_profile, create_profile, delete_profile, rename_profile, profile_help
 from cleanup import list_disk_usage, delete_fork_branch, delete_old_backups, cleanup_help
 from dry_run import dry_run
-from config import load_config, get_config_value, set_config_value, config_help
+from config import load_config, get_config_value, set_config_value, config_help, LOGS_DIR
 # Import updater functions
 from updater import check_for_updates, self_update
 
@@ -118,9 +118,11 @@ def main():
     # Load config early
     config = load_config()
 
-    # Setup logging (consider making log path configurable)
+    # Setup logging (now uses environment-variable-based path)
+    import os
+    os.makedirs(LOGS_DIR, exist_ok=True)
     logging.basicConfig(
-        filename="/data/fork_manager/logs/cli.log",
+        filename=os.path.join(LOGS_DIR, "cli.log"),
         level=logging.INFO,
         format="%(asctime)s %(levelname)s %(message)s"
     )

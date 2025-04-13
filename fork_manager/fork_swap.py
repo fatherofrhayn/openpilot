@@ -23,11 +23,8 @@ import time
 import shutil
 import logging
 
-FORK_MANAGER_ROOT = "/data/fork_manager"
-FORKS_DIR = os.path.join(FORK_MANAGER_ROOT, "forks")
-LOGS_DIR = os.path.join(FORK_MANAGER_ROOT, "logs")
-OPENPILOT_SYMLINK = "/data/openpilot"
-UNDO_FILE = os.path.join(FORK_MANAGER_ROOT, "settings", "last_swap.json")
+from config import FORK_MANAGER_ROOT, FORKS_DIR, LOGS_DIR, SETTINGS_DIR, OPENPILOT_SYMLINK
+UNDO_FILE = os.path.join(SETTINGS_DIR, "last_swap.json")
 
 def _log_action(action, details):
     """

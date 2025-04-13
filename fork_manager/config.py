@@ -1,14 +1,25 @@
 #!/usr/bin/env python3
 """
 config.py - Configuration management for Fork Manager 2.0
+
+This module centralizes all persistent paths and config logic.
+- FORK_MANAGER_ROOT is set by the FORK_MANAGER_ROOT environment variable, or defaults to ./fork_manager_data for development.
+- OPENPILOT_SYMLINK is set by the OPENPILOT_SYMLINK environment variable, or defaults to /data/openpilot on device and ./openpilot_symlink for development.
+- All other paths (forks, logs, settings) are derived from this root.
 """
 
 import os
 import json
 
-FORK_MANAGER_ROOT = "/data/fork_manager"
+# Centralized base directory for all persistent data
+FORK_MANAGER_ROOT = os.environ.get("FORK_MANAGER_ROOT", "./fork_manager_data")
+FORKS_DIR = os.path.join(FORK_MANAGER_ROOT, "forks")
+LOGS_DIR = os.path.join(FORK_MANAGER_ROOT, "logs")
 SETTINGS_DIR = os.path.join(FORK_MANAGER_ROOT, "settings")
 CONFIG_FILE = os.path.join(SETTINGS_DIR, "config.json")
+
+# Parameterized Openpilot symlink path
+OPENPILOT_SYMLINK = os.environ.get("OPENPILOT_SYMLINK", "./openpilot_symlink")
 
 DEFAULT_CONFIG = {
     "auto_update": True,

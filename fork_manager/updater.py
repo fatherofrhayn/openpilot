@@ -12,10 +12,7 @@ import shutil
 import json
 import time
 
-from config import load_config
-
-FORK_MANAGER_ROOT = "/data/fork_manager"
-LOGS_DIR = os.path.join(FORK_MANAGER_ROOT, "logs")
+from config import load_config, FORK_MANAGER_ROOT, LOGS_DIR
 
 def _log_action(action, details):
     log_entry = {

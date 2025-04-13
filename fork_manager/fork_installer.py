@@ -22,9 +22,7 @@ import time
 import subprocess
 import shutil
 
-FORK_MANAGER_ROOT = "/data/fork_manager"
-FORKS_DIR = os.path.join(FORK_MANAGER_ROOT, "forks")
-LOGS_DIR = os.path.join(FORK_MANAGER_ROOT, "logs")
+from config import FORK_MANAGER_ROOT, FORKS_DIR, LOGS_DIR
 
 def _log_action(action, details):
     """
