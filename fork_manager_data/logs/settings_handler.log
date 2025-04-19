@@ -1,0 +1,4 @@
+{"timestamp": "2025-04-13T19:01:25Z", "action": "backup", "details": {"fork": "openpilot", "branch": "master", "backup_path": "./fork_manager_data/forks/openpilot__master/settings/backup_20250413_190125"}}
+{"timestamp": "2025-04-13T19:01:26Z", "action": "restore", "details": {"fork": "openpilot", "branch": "master", "backup_dir": "./fork_manager_data/forks/openpilot__master/settings/backup_20250413_190125"}}
+{"timestamp": "2025-04-13T19:01:32Z", "action": "restore_error", "details": {"fork": "nonexistfork", "branch": "nonexistbranch", "error": "[Errno 2] No such file or directory: './fork_manager_data/forks/nonexistfork__nonexistbranch/settings'"}}
+{"timestamp": "2025-04-13T19:01:32Z", "action": "backup", "details": {"fork": "nonexistfork", "branch": "nonexistbranch", "backup_path": "./fork_manager_data/forks/nonexistfork__nonexistbranch/settings/backup_20250413_190132"}}

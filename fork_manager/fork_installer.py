@@ -22,7 +22,7 @@ import time
 import subprocess
 import shutil
 
-from config import FORK_MANAGER_ROOT, FORKS_DIR, LOGS_DIR
+from .config import FORK_MANAGER_ROOT, FORKS_DIR, LOGS_DIR # Relative import
 
 def _log_action(action, details):
     """

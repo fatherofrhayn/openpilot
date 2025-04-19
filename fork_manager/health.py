@@ -9,9 +9,10 @@ import json
 import time
 import hashlib
 
-from config import FORK_MANAGER_ROOT, FORKS_DIR, LOGS_DIR, OPENPILOT_SYMLINK
+from .config import FORK_MANAGER_ROOT, FORKS_DIR, LOGS_DIR, OPENPILOT_SYMLINK, SETTINGS_DIR # Use relative import
 
 def _log_action(action, details):
+    os.makedirs(LOGS_DIR, exist_ok=True) # Ensure log dir exists
     log_entry = {
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "action": action,

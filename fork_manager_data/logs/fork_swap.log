@@ -1,0 +1,2 @@
+{"timestamp": "2025-04-13T19:01:25Z", "action": "swap", "details": {"fork": "openpilot", "branch": "master", "target": "./fork_manager_data/forks/openpilot__master", "prev_target": null}}
+{"timestamp": "2025-04-13T19:01:31Z", "action": "swap_error", "details": {"fork": "nonexistfork", "branch": "nonexistbranch", "error": "Fork/branch directory not found: ./fork_manager_data/forks/nonexistfork__nonexistbranch"}}

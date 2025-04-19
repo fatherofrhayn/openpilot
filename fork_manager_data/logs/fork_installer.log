@@ -1,0 +1,4 @@
+{"timestamp": "2025-04-13T19:01:24Z", "action": "install_error", "details": {"git_url": "https://github.com/commaai/openpilot.git", "branch": "master", "error": "Fork/branch already exists: ./fork_manager_data/forks/openpilot__master"}}
+{"timestamp": "2025-04-13T19:01:27Z", "action": "update", "details": {"fork": "openpilot", "branch": "master", "target": "./fork_manager_data/forks/openpilot__master"}}
+{"timestamp": "2025-04-13T19:01:32Z", "action": "install_error", "details": {"git_url": "https://github.com/invalid/repo.git", "branch": "master", "error": "Git clone failed: Cloning into './fork_manager_data/forks/repo__master'...\nremote: Repository not found.\nfatal: repository 'https://github.com/invalid/repo.git/' not found"}}
+{"timestamp": "2025-04-13T19:01:32Z", "action": "update_error", "details": {"fork": "nonexistfork", "branch": "nonexistbranch", "error": "Fork/branch directory not found: ./fork_manager_data/forks/nonexistfork__nonexistbranch"}}

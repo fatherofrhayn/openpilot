@@ -23,7 +23,7 @@ import time
 import shutil
 import logging
 
-from config import FORK_MANAGER_ROOT, FORKS_DIR, LOGS_DIR, SETTINGS_DIR, OPENPILOT_SYMLINK
+from .config import FORK_MANAGER_ROOT, FORKS_DIR, LOGS_DIR, SETTINGS_DIR, OPENPILOT_SYMLINK # Relative import
 UNDO_FILE = os.path.join(SETTINGS_DIR, "last_swap.json")
 
 def _log_action(action, details):
