@@ -1,0 +1,13 @@
+Import("env")
+
+SConscript(['opendbc/can/SConscript'], exports={'env': env})
+SConscript(['opendbc/dbc/SConscript'], exports={'env': env})
+
+import subprocess
+import sysconfig
+import platform
+system = platform.system()
+
+# test files
+if GetOption('extras') and system != "Darwin":
+  SConscript('opendbc/safety/tests/libsafety/SConscript')

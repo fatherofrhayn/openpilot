@@ -1,0 +1,15 @@
+{
+  "last_action": "install",
+  "last_action_time": "2025-04-21T06:03:19Z",
+  "git_url": "https://github.com/fatherofrhayn/openpilot.git",
+  "branch": "ccnc-port",
+  "provenance": [
+    {
+      "timestamp": "2025-04-21T06:03:19Z",
+      "action": "install",
+      "user": "jblair",
+      "git_url": "https://github.com/fatherofrhayn/openpilot.git",
+      "branch": "ccnc-port"
+    }
+  ]
+}

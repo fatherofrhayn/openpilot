@@ -1,0 +1,25 @@
+2025-04-21T22:59:27: Populating font family aliases took 226 ms. Replace uses of missing font family "Noto Color Emoji" with one that exists to avoid this cost. 
+2025-04-21T22:59:28: DBus call error: "Not connected to D-Bus server"
+2025-04-21T22:59:28: DBus call error: "Not connected to D-Bus server"
+2025-04-21T22:59:28: SoftwareManagerPanel constructor entered
+2025-04-21T22:59:28: SoftwareManagerPanel ctor start
+2025-04-21T22:59:28: PathConfig: using CLI binary at: "/Users/jblair/Github/openpilot/fork_manager/fork_manager"
+2025-04-21T22:59:28: SoftwareManagerPanel: using CLI binary at: "/Users/jblair/Github/openpilot/fork_manager/fork_manager"
+2025-04-21T22:59:28: SoftwareManager::triggerUpdate (test log)
+2025-04-21T22:59:28: SoftwareManager::triggerUpdate called with type: 11 , ref: ""
+2025-04-21T22:59:28: SoftwareManager: CLI wrapper not executable, falling back to python3 with script: "/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh"
+2025-04-21T22:59:28: SoftwareManager: about to start process with program: "python3" , args: ("/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh", "profiles")
+2025-04-21T22:59:28: SoftwareManager: starting "python3" ("/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh", "profiles")
+2025-04-21T22:59:28: SoftwareManagerPanel ctor end
+2025-04-21T22:59:28: onManagerProfilesListed: ()
+2025-04-21T22:59:28: SoftwareManager::triggerUpdate (test log)
+2025-04-21T22:59:28: SoftwareManager::triggerUpdate called with type: 12 , ref: ""
+2025-04-21T22:59:28: SoftwareManager: CLI wrapper not executable, falling back to python3 with script: "/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh"
+2025-04-21T22:59:28: SoftwareManager: about to start process with program: "python3" , args: ("/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh", "list")
+2025-04-21T22:59:28: SoftwareManager: starting "python3" ("/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh", "list")
+2025-04-21T22:59:28: onManagerForksListed slot entered
+2025-04-21T22:59:28: Forks from CLI: ()
+2025-04-21T22:59:28: Forks from CLI: ()
+2025-04-21T22:59:28: Parsed fork entries: ()
+2025-04-21T22:59:28: onManagerForksListed: ()
+2025-04-21T22:59:57: No RSA private key found, please run manager.py or registration.py

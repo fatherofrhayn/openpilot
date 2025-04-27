@@ -1,0 +1,14 @@
+#pragma once
+
+#include <QScrollArea>
+#include <QResizeEvent>
+
+class ScrollView : public QScrollArea {
+  Q_OBJECT
+
+public:
+  explicit ScrollView(QWidget *w = nullptr, QWidget *parent = nullptr);
+protected:
+  void hideEvent(QHideEvent *e) override;
+  void resizeEvent(QResizeEvent *e) override;
+};
