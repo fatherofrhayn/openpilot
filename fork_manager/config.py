@@ -12,11 +12,17 @@ import os
 import json
 
 # Centralized base directory for all persistent data
-FORK_MANAGER_ROOT = os.environ.get("FORK_MANAGER_ROOT", "./fork_manager_data")
+# Repo root = parent directory of this config module
+_repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+FORK_MANAGER_ROOT = os.environ.get("FORK_MANAGER_ROOT", os.path.join(_repo_root, "fork_manager_data"))
 FORKS_DIR = os.path.join(FORK_MANAGER_ROOT, "forks")
 LOGS_DIR = os.path.join(FORK_MANAGER_ROOT, "logs")
 SETTINGS_DIR = os.path.join(FORK_MANAGER_ROOT, "settings")
 CONFIG_FILE = os.path.join(SETTINGS_DIR, "config.json")
+
+# Ensure data directories exist
+for _d in (FORKS_DIR, LOGS_DIR, SETTINGS_DIR):
+    os.makedirs(_d, exist_ok=True)
 
 # Parameterized Openpilot symlink path
 OPENPILOT_SYMLINK = os.environ.get("OPENPILOT_SYMLINK", "./openpilot_symlink")
@@ -25,7 +31,9 @@ DEFAULT_CONFIG = {
     "auto_update": True,
     "update_repo": "https://github.com/fatherofrhayn/openpilot.git",
     "update_branch": "manager",
+    "auto_backup": True,
     "backup_history_limit": 5,
+    "auto_restore_enabled": False,
     # Add other configurable settings here
 }
 
@@ -53,7 +61,6 @@ def load_config():
 def save_config(config):
     """Saves the configuration to file."""
     try:
-        os.makedirs(SETTINGS_DIR, exist_ok=True)
         with open(CONFIG_FILE, "w") as f:
             json.dump(config, f, indent=2)
     except Exception as e:

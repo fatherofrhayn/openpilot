@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "entries": [
+    {
+      "id": "openpilot",
+      "branch": "manager",
+      "path": "/Users/jblair/Github/openpilot",
+      "type": "local",
+      "added": "2025-04-21T17:02:45Z"
+    },
+    {
+      "id": "openpilot",
+      "branch": "master",
+      "path": "./fork_manager_data/forks/openpilot__master",
+      "type": "clone",
+      "added": "2025-04-21T17:02:46Z"
+    }
+  ]
+}

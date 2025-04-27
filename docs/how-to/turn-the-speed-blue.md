@@ -7,18 +7,21 @@ And if you have a comma 3/3X, we'll deploy the change to your device for testing
 
 ## 1. Setup your development environment
 
-Run this to clone openpilot and install all the dependencies:
+Use Docker to standardize your dev environment (see main README for details):
+
 ```bash
-bash <(curl -fsSL openpilot.comma.ai)
+# 1. Build the Docker image (once)
+docker build -t openpilot-dev .
+
+# 2. Launch an interactive shell in-container
+docker run --rm -it \
+  -v $(pwd):/openpilot \
+  -w /openpilot \
+  openpilot-dev
 ```
 
-Navigate to openpilot folder & activate a Python virtual environment
-```bash
-cd openpilot
-source .venv/bin/activate
-```
+Inside the container, build openpilot:
 
-Then, compile openpilot:
 ```bash
 scons -j8
 ```

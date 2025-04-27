@@ -63,6 +63,24 @@ To start developing openpilot
 
 openpilot is developed by [comma](https://comma.ai/) and by users like you. We welcome both pull requests and issues on [GitHub](http://github.com/commaai/openpilot).
 
+### Development Environment
+
+Use Docker to standardize your dev environment:
+
+```bash
+# 1. Build the Docker image (once)
+docker build -t openpilot-dev .
+
+# 2. Launch an interactive shell in-container
+docker run --rm -it \
+  -v $(pwd):/openpilot \
+  -w /openpilot \
+  openpilot-dev
+
+# 3. Inside the container:
+scons -j$(nproc)
+```
+
 * Join the [community Discord](https://discord.comma.ai)
 * Check out [the contributing docs](docs/CONTRIBUTING.md)
 * Check out the [openpilot tools](tools/)

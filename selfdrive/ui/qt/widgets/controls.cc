@@ -2,6 +2,7 @@
 
 #include <QPainter>
 #include <QStyleOption>
+#include <QSizePolicy>
 
 AbstractControl::AbstractControl(const QString &title, const QString &desc, const QString &icon, QWidget *parent) : QFrame(parent) {
   QVBoxLayout *main_layout = new QVBoxLayout(this);
@@ -64,7 +65,14 @@ void AbstractControl::hideEvent(QHideEvent *e) {
 
 // controls
 
-ButtonControl::ButtonControl(const QString &title, const QString &text, const QString &desc, QWidget *parent) : AbstractControl(title, desc, "", parent) {
+ButtonControl::ButtonControl(const QString &title, const QString &text, const QString &desc, QWidget *parent, int width) : AbstractControl(title, desc, "", parent) {
+  // hide title_label if no title provided
+  if (title.isEmpty()) {
+    title_label->hide();
+    hlayout->removeWidget(title_label);
+  }
+  // tighten internal layout for button control
+  hlayout->setSpacing(0);
   btn.setText(text);
   btn.setStyleSheet(R"(
     QPushButton {
@@ -82,9 +90,11 @@ ButtonControl::ButtonControl(const QString &title, const QString &text, const QS
       color: #33E4E4E4;
     }
   )");
-  btn.setFixedSize(250, 100);
+  btn.setFixedHeight(100);
+  btn.setMinimumWidth(width);
+  btn.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   QObject::connect(&btn, &QPushButton::clicked, this, &ButtonControl::clicked);
-  hlayout->addWidget(&btn);
+  hlayout->addWidget(&btn, 1);
 }
 
 // ElidedLabel

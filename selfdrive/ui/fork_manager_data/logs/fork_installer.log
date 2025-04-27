@@ -1,0 +1,1 @@
+{"timestamp": "2025-04-21T06:03:19Z", "action": "install", "details": {"fork": "openpilot", "branch": "ccnc-port", "git_url": "https://github.com/fatherofrhayn/openpilot.git", "target": "./fork_manager_data/forks/openpilot__ccnc-port"}}

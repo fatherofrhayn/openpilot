@@ -125,6 +125,20 @@ void initApp(int argc, char *argv[], bool disable_hidpi) {
 }
 
 void swagLogMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
+  // Write to local debug log file for developer visibility
+  static QFile debugLogFile("/Users/jblair/Github/openpilot/qt_debug.log");
+  if (!debugLogFile.isOpen() && !debugLogFile.open(QIODevice::Append | QIODevice::Text)) {
+    // Fallback to /tmp if home directory fails
+    static QFile fallbackFile("/tmp/qt_debug.log");
+    if (!fallbackFile.isOpen()) fallbackFile.open(QIODevice::Append | QIODevice::Text);
+    QTextStream fallbackOut(&fallbackFile);
+    fallbackOut << QDateTime::currentDateTime().toString(Qt::ISODate) << ": " << msg << "\n";
+    fallbackOut.flush();
+  } else {
+    QTextStream debugOut(&debugLogFile);
+    debugOut << QDateTime::currentDateTime().toString(Qt::ISODate) << ": " << msg << "\n";
+    debugOut.flush();
+  }
   static std::map<QtMsgType, int> levels = {
     {QtMsgType::QtDebugMsg, CLOUDLOG_DEBUG},
     {QtMsgType::QtInfoMsg, CLOUDLOG_INFO},

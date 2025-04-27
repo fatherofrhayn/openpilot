@@ -1,0 +1,25 @@
+Release Notes for Cppcheck 2.18
+
+New checks:
+-
+
+Improved checking:
+-
+
+GUI:
+-
+
+Changed interface:
+-
+
+Deprecations:
+- Support for building with Qt 5 will be removed in Cppcheck 2.19.
+-
+
+Other:
+- Updated Qt to 6.8.2 (official Windows release only).
+- added CMake target `run-clang-tidy-csa` to run Clang Static Analyzer
+- added CMake option `ENABLE_CSA_ALPHA` to enable the Clang Static Analyzer alpha checkers
+- Updated TinyXML-2 to v11.0.0
+- The minimum supported Python version has been bumped to 3.7.
+-

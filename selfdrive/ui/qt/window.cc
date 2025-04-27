@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent) {
 
   settingsWindow = new SettingsWindow(this);
   main_layout->addWidget(settingsWindow);
+  main_layout->setCurrentWidget(settingsWindow);
   QObject::connect(settingsWindow, &SettingsWindow::closeSettings, this, &MainWindow::closeSettings);
   QObject::connect(settingsWindow, &SettingsWindow::reviewTrainingGuide, [=]() {
     onboardingWindow->showTrainingGuide();

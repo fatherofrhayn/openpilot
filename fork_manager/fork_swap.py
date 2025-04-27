@@ -20,10 +20,10 @@ import os
 import sys
 import json
 import time
-import shutil
-import logging
 
-from .config import FORK_MANAGER_ROOT, FORKS_DIR, LOGS_DIR, SETTINGS_DIR, OPENPILOT_SYMLINK # Relative import
+from .config import FORKS_DIR, LOGS_DIR, SETTINGS_DIR, OPENPILOT_SYMLINK, get_config_value
+from .retry import retryable
+from .settings_handler import backup_settings, restore_settings
 UNDO_FILE = os.path.join(SETTINGS_DIR, "last_swap.json")
 
 def _log_action(action, details):
@@ -36,7 +36,7 @@ def _log_action(action, details):
         "details": details
     }
     log_path = os.path.join(LOGS_DIR, "fork_swap.log")
-    with open(log_path, "a") as f:
+    with open(log_path, "a", encoding='utf-8') as f:
         f.write(json.dumps(log_entry) + "\n")
 
 def _get_fork_path(fork, branch):
@@ -65,9 +65,9 @@ def _write_forkmeta(fork_path, action, user="system"):
     meta = {}
     if os.path.exists(meta_path):
         try:
-            with open(meta_path, "r") as f:
+            with open(meta_path, encoding='utf-8') as f:
                 meta = json.load(f)
-        except Exception:
+        except (FileNotFoundError, json.JSONDecodeError, PermissionError, OSError):
             meta = {}
     provenance = meta.get("provenance", [])
     provenance.append({
@@ -78,9 +78,10 @@ def _write_forkmeta(fork_path, action, user="system"):
     meta["last_action"] = action
     meta["last_action_time"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     meta["provenance"] = provenance
-    with open(meta_path, "w") as f:
+    with open(meta_path, "w", encoding='utf-8') as f:
         json.dump(meta, f, indent=2)
 
+@retryable(retries=3, delay=1)
 def swap_fork(fork, branch, dry_run=False):
     """
     Atomically swap the active Openpilot fork/branch by updating the /data/openpilot symlink.
@@ -97,10 +98,24 @@ def swap_fork(fork, branch, dry_run=False):
         if os.path.islink(OPENPILOT_SYMLINK):
             prev_target = os.readlink(OPENPILOT_SYMLINK)
         elif os.path.exists(OPENPILOT_SYMLINK):
-            raise RuntimeError(f"{OPENPILOT_SYMLINK} exists but is not a symlink. Aborting for safety.")
+            raise RuntimeError(
+                f"{OPENPILOT_SYMLINK} exists but is not a symlink. Aborting for safety."
+            )
         else:
             prev_target = None
         print(f"Previous symlink target: {prev_target}")
+
+        # Auto-backup settings of current fork if enabled
+        if get_config_value("auto_backup") and prev_target:
+            old_base = os.path.basename(prev_target)
+            if "__" in old_base:
+                old_fork, old_branch = old_base.split("__", 1)
+            else:
+                old_fork, old_branch = old_base, ""
+            if dry_run:
+                print(f"DRY RUN: Would backup settings for {old_fork} [{old_branch}]")
+            else:
+                backup_settings(old_fork, old_branch, dry_run=False)
 
         if dry_run:
             print("DRY RUN: Would save undo info.")
@@ -117,7 +132,7 @@ def swap_fork(fork, branch, dry_run=False):
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         }
         os.makedirs(os.path.dirname(UNDO_FILE), exist_ok=True)
-        with open(UNDO_FILE, "w") as f:
+        with open(UNDO_FILE, "w", encoding='utf-8') as f:
             json.dump(undo_info, f, indent=2)
 
         # Atomically update symlink
@@ -126,6 +141,11 @@ def swap_fork(fork, branch, dry_run=False):
             os.unlink(tmp_link)
         os.symlink(fork_path, tmp_link)
         os.replace(tmp_link, OPENPILOT_SYMLINK)
+
+        # Auto-restore settings if enabled
+        if get_config_value("auto_restore_enabled") and not dry_run:
+            print(f"Auto-restoring settings for {fork} [{branch}]")
+            restore_settings(fork, branch, dry_run=False)
 
         # Write forkmeta
         _write_forkmeta(fork_path, "swap", user=os.getenv("USER", "system"))
@@ -137,7 +157,7 @@ def swap_fork(fork, branch, dry_run=False):
             "prev_target": prev_target
         })
         print(f"Successfully swapped to {fork} [{branch}] at {fork_path}")
-    except Exception as e:
+    except (RuntimeError, FileNotFoundError, OSError) as e:
         _log_action("swap_error", {"fork": fork, "branch": branch, "error": str(e)})
         print(f"Error swapping fork: {e}", file=sys.stderr)
         # Don't exit in dry run mode
@@ -156,7 +176,7 @@ def undo_swap(dry_run=False):
         if not os.path.exists(UNDO_FILE):
             print("No previous swap to undo.")
             return
-        with open(UNDO_FILE, "r") as f:
+        with open(UNDO_FILE, encoding='utf-8') as f:
             undo_info = json.load(f)
         prev_target = undo_info.get("prev_target")
         if not prev_target:
@@ -178,7 +198,7 @@ def undo_swap(dry_run=False):
         os.replace(tmp_link, OPENPILOT_SYMLINK)
         _log_action("undo_swap", {"restored_target": prev_target})
         print(f"Successfully restored previous fork: {prev_target}")
-    except Exception as e:
+    except (RuntimeError, FileNotFoundError, OSError) as e:
         _log_action("undo_swap_error", {"error": str(e)})
         print(f"Error undoing swap: {e}", file=sys.stderr)
         # Don't exit in dry run mode

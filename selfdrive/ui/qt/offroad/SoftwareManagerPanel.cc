@@ -30,6 +30,10 @@
 #include "selfdrive/ui/qt/offroad/SoftwareManagerUtils.h"
 #include <QFrame>
 #include <QCoreApplication>
+#include <QFile>
+#include <QIODevice>
+#include <QTimer>
+#include <QToolTip>
 
 /**
  * Constructor: initialize UI elements, layouts, and connect SoftwareManager signals.
@@ -54,6 +58,7 @@ SoftwareManagerPanel::SoftwareManagerPanel(QWidget *parent) : ListWidget(parent)
   deleteProfileBtn = new ButtonControl(QString(), tr("Delete"), "", this, profileBtnWidth);
   selfUpdateToggle = new ParamControl("SoftwareManager.SelfUpdateEnabled", tr("Self Update"), tr(""), "");
   autoBackupToggle = new ParamControl("SoftwareManager.AutoBackupEnabled", tr("Auto Backup"), tr(""), "");
+  autoRestoreToggle = new ParamControl("SoftwareManager.AutoRestoreEnabled", tr("Auto-Restore"), tr(""), "");
   advancedLogsToggle = new ParamControl("SoftwareManager.ShowAdvancedLogs", tr("Advanced Logs"), tr(""), "");
   historyLimitSpin = new QSpinBox(this);
   historyLimitSpin->setRange(0, 100);
@@ -238,6 +243,7 @@ SoftwareManagerPanel::SoftwareManagerPanel(QWidget *parent) : ListWidget(parent)
   forksHeaderLayout->addWidget(refreshForksBtn);
   connect(refreshForksBtn, &ButtonControl::clicked, [=]() {
     logView->append(tr("Refreshing forks list..."));
+    qDebug() << "Manual Refresh Forks button clicked: triggering fork list refresh";
     manager_->triggerUpdate(UpdateType::LIST_FORKS);
   });
   QWidget *forksHeaderContainer = new QWidget(this);
@@ -263,6 +269,7 @@ SoftwareManagerPanel::SoftwareManagerPanel(QWidget *parent) : ListWidget(parent)
   QGridLayout *settingsLayout = new QGridLayout();
   settingsLayout->addWidget(selfUpdateToggle, 0, 0);
   settingsLayout->addWidget(autoBackupToggle, 0, 1);
+  settingsLayout->addWidget(autoRestoreToggle, 0, 2);
   settingsLayout->addWidget(advancedLogsToggle, 1, 0);
   settingsLayout->addWidget(historyLimitSpin, 1, 1);
   settingsLayout->addWidget(checkUpdateBtn, 2, 0);
@@ -296,6 +303,12 @@ SoftwareManagerPanel::SoftwareManagerPanel(QWidget *parent) : ListWidget(parent)
     footerContainer->setLayout(footerLayout);
     addItem(footerContainer);
   }
+
+  // Automatic update checks every 15 min
+  updateTimer = new QTimer(this);
+  updateTimer->setInterval(15 * 60 * 1000);
+  connect(updateTimer, &QTimer::timeout, this, [this]() { onTriggerClicked(UpdateType::CHECK); });
+  updateTimer->start();
 
   // Initial listings
   manager_->triggerUpdate(UpdateType::LIST_PROFILES);
@@ -333,6 +346,13 @@ void SoftwareManagerPanel::onAboutClicked() {
  */
 void SoftwareManagerPanel::onManagerCliOutput(const QString &output) {
   logView->append(output);
+  // Detect remote update availability toast
+  if (output.contains("Update available.")) {
+    // Non-modal toast: use QToolTip at top-left
+    QPoint pt = mapToGlobal(rect().topLeft());
+    QToolTip::showText(pt, tr("New Fork Manager version available!"), this);
+    emit updateNotification(tr("New version %1 available").arg(output.split("Remote version: ").last().trimmed()));
+  }
 }
 
 /**
@@ -366,17 +386,22 @@ void SoftwareManagerPanel::onManagerUpdateStarted(UpdateType type) {
  */
 void SoftwareManagerPanel::onManagerUpdateFinished(UpdateType type, bool success) {
   // Revert to Idle or show error
+  // Always refresh fork list after any fork-changing action, regardless of success or failure
+  bool isForkAction = (type == UpdateType::INSTALL || type == UpdateType::FORK_UPDATE || type == UpdateType::FORK_CLEANUP || type == UpdateType::FORK_SWAP || type == UpdateType::FORK_UNDO);
   if (success) {
     statusLabel->setText(tr("Offroad"));
-    // Auto-refresh lists after operations
-    if (type == UpdateType::INSTALL || type == UpdateType::FORK_UPDATE || type == UpdateType::FORK_CLEANUP) {
+    if (isForkAction) {
+      qDebug() << "onManagerUpdateFinished: Refreshing forks after fork action (success)";
       manager_->triggerUpdate(UpdateType::LIST_FORKS);
     } else if (type == UpdateType::PROFILE_ACTIVATE) {
-      // Refresh profiles after activation
       manager_->triggerUpdate(UpdateType::LIST_PROFILES);
     }
   } else {
     statusLabel->setText(tr("Error"));
+    if (isForkAction) {
+      qDebug() << "onManagerUpdateFinished: Refreshing forks after fork action (failure)";
+      manager_->triggerUpdate(UpdateType::LIST_FORKS);
+    }
   }
   emit updateFinished(type, success);
 }
@@ -412,6 +437,7 @@ void SoftwareManagerPanel::onManagerProfilesListed(const QStringList &profiles) 
  * Clears existing entries and populates the forksListLayout with Drive/Update/Delete controls.
  */
 void SoftwareManagerPanel::onManagerForksListed(const QStringList &forks) {
+  qDebug() << "onManagerForksListed: called, forks list size =" << forks.size();
   qDebug() << "onManagerForksListed slot entered";
   qDebug() << "Forks from CLI:" << forks;
   qDebug() << "Forks from CLI:" << forks;
@@ -493,6 +519,19 @@ void SoftwareManagerPanel::onManagerForksListed(const QStringList &forks) {
     QWidget *rowWidget = new QWidget(this);
     rowWidget->setLayout(rowLayout);
     forksListLayout->addWidget(rowWidget);
+    // Tooltip: show last-action timestamp from metadata
+    QString metaPath = PathConfig::instance().forksDir() + "/" + f + "/.forkmeta.json";
+    QFile mf(metaPath);
+    if (mf.open(QIODevice::ReadOnly)) {
+      QJsonDocument doc = QJsonDocument::fromJson(mf.readAll());
+      mf.close();
+      if (doc.isObject()) {
+        QString lastTime = doc.object().value("last_action_time").toString();
+        if (!lastTime.isEmpty()) {
+          rowWidget->setToolTip(tr("Last action: %1").arg(lastTime));
+        }
+      }
+    }
   }
   // Auto-size container to include all rows, margins, and spacing
   forksListWidget->setMinimumHeight(forksListWidget->sizeHint().height() * 6);

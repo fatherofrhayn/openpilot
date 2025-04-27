@@ -131,6 +131,9 @@ else:
 
     cflags += ["-DGL_SILENCE_DEPRECATION"]
     cxxflags += ["-DGL_SILENCE_DEPRECATION"]
+    # Force ARM64 build on macOS
+    cflags += ["-arch", "arm64"]
+    cxxflags += ["-arch", "arm64"]
     cpppath += [
       f"{brew_prefix}/include",
       f"{brew_prefix}/opt/openssl@3.0/include",
@@ -218,6 +221,11 @@ if arch == "Darwin":
   # RPATH is not supported on macOS, instead use the linker flags
   darwin_rpath_link_flags = [f"-Wl,-rpath,{path}" for path in env["RPATH"]]
   env["LINKFLAGS"] += darwin_rpath_link_flags
+  # Force ARM64 for all compiler and linker flags
+  env["CCFLAGS"] += ["-arch", "arm64"]
+  env["LINKFLAGS"] += ["-arch", "arm64"]
+  env["CFLAGS"] += ["-arch", "arm64"]
+  env["CXXFLAGS"] += ["-arch", "arm64"]
 
 if GetOption('compile_db'):
   env.CompilationDatabase('compile_commands.json')
@@ -289,11 +297,8 @@ else:
     qt_libs += ["GL"]
 qt_env['QT3DIR'] = qt_env['QTDIR']
 
-# compatibility for older SCons versions
-try:
-  qt_env.Tool('qt3')
-except SCons.Errors.UserError:
-  qt_env.Tool('qt')
+# Use 'qt3' tool for Qt (renamed in newer SCons)
+qt_env.Tool('qt3')
 
 qt_env['CPPPATH'] += qt_dirs + ["#third_party/qrcode"]
 qt_flags = [
@@ -370,10 +375,13 @@ SConscript(['third_party/SConscript'])
 
 SConscript(['selfdrive/SConscript'])
 
+# Replay always on extras
 if Dir('#tools/cabana/').exists() and GetOption('extras'):
   SConscript(['tools/replay/SConscript'])
-  if arch != "larch64":
-    SConscript(['tools/cabana/SConscript'])
+
+# Cabana only on non-Darwin, non-larch64 extras
+if Dir('#tools/cabana/').exists() and GetOption('extras') and platform.system() != "Darwin" and arch != "larch64":
+  SConscript(['tools/cabana/SConscript'])
 
 external_sconscript = GetOption('external_sconscript')
 if external_sconscript:

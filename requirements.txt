@@ -1,0 +1,12 @@
+# Python dependencies for building and running openpilot
+pycryptodome
+numpy<2.0
+casadi
+pycapnp
+sympy
+pyzmq
+cffi
+smbus2
+onnx
+setproctitle
+scons

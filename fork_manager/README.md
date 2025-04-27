@@ -33,14 +33,14 @@ Openpilot Fork Manager 2.0 is a robust, modular, and Openpilot-native system for
 |     (Show detailed logs for troubleshooting)         |
 | Backup History Limit: [ 5 ] [?]                      |
 |     (Number of backups to keep per fork/branch)      |
-+| [Check Updates] [Disk Usage]                         |
-|     (Verify manager version & inspect storage usage) |
 +------------------------------------------------------+
 | Log/Status: [scrollable area] [Clear Log]            |
 +------------------------------------------------------+
 | [Help] [About]                                       |
 +------------------------------------------------------+
 ```
+
+![](docs/images/software_manager_panel.png)
 
 ### Key Workflows
 
@@ -62,10 +62,6 @@ Openpilot Fork Manager 2.0 is a robust, modular, and Openpilot-native system for
 #### Logs and Help
 - All actions and errors are shown in the log/status area.
 - **[Help]** and **[About]** are always accessible.
-
-#### Manager Maintenance
-- **[Check Updates]** checks if a new manager version is available.
-- **[Disk Usage]** displays current storage usage of forks and backups.
 
 ### Safety and Error Handling
 - All destructive actions require confirmation.
@@ -111,8 +107,12 @@ Openpilot Fork Manager 2.0 is a robust, modular, and Openpilot-native system for
 - All backend and UI code is modular, well-commented, and follows best practices.
 - Modal dialogs are used for all multi-step or complex actions.
 - All features are accessible from both CLI and GUI.
-- Added utility buttons for manual update check and disk usage.
 
----
+### Logging
+- CLI and updater use rotating file handlers (5 MB max, 3 backups).
+- Logs live in `logs/` under your `FORK_MANAGER_ROOT`.
+- Warnings and errors also appear on stderr during CLI invocation.
+- **Background Update Checks**: automatically polls GitHub every 15 minutes.
+- **Non-modal Notifications**: toasts appear when a new Fork Manager version is available.
 
 **For further details, see in-app help or contact the project maintainers.**

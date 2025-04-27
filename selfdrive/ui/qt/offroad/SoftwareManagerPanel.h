@@ -12,6 +12,7 @@
 #include <QSpinBox>
 #include <QLabel>
 #include <QStringList>
+#include <QTimer>
 
 class SoftwareManagerPanel : public ListWidget {
   Q_OBJECT
@@ -25,6 +26,8 @@ signals:
   void updateStarted(UpdateType type);
   void updateProgress(int progress);
   void updateFinished(UpdateType type, bool success);
+  void updateNotification(const QString &msg);
+  void profilesListed(const QStringList &profiles);
 
 private slots:
   void onTriggerClicked(UpdateType type, const QString &ref = QString());
@@ -62,6 +65,7 @@ private:
   // Settings toggles
   ParamControl *selfUpdateToggle;
   ParamControl *autoBackupToggle;
+  ParamControl *autoRestoreToggle;
   ParamControl *advancedLogsToggle;
   QSpinBox *historyLimitSpin;
 
@@ -76,4 +80,5 @@ private:
   // Footer
   ButtonControl *helpBtn;
   ButtonControl *aboutBtn;
+  QTimer *updateTimer;
 };

@@ -1,20 +1,26 @@
 #include "InstallForkDialog.h"
+#include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QMessageBox>
 
 InstallForkDialog::InstallForkDialog(QWidget *parent)
-    : QDialog(parent), url(""), branch("") {
+    : QDialog(parent), urlStr(""), branchStr("") {
   setWindowTitle("Install New Fork");
   setModal(true);
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
   QLabel *urlLabel = new QLabel("Git URL:", this);
   urlEdit = new QLineEdit(this);
+  urlEdit->setPlaceholderText(tr("e.g. https://github.com/commaai/openpilot.git"));
   mainLayout->addWidget(urlLabel);
   mainLayout->addWidget(urlEdit);
 
   QLabel *branchLabel = new QLabel("Branch:", this);
   branchEdit = new QLineEdit(this);
+  branchEdit->setPlaceholderText(tr("branch (e.g. master)"));
   mainLayout->addWidget(branchLabel);
   mainLayout->addWidget(branchEdit);
 
@@ -25,18 +31,18 @@ InstallForkDialog::InstallForkDialog(QWidget *parent)
 }
 
 QString InstallForkDialog::gitUrl() const {
-  return url;
+  return urlStr;
 }
 
 QString InstallForkDialog::branch() const {
-  return branch;
+  return branchStr;
 }
 
 void InstallForkDialog::onInstallClicked() {
-  url = urlEdit->text().trimmed();
-  branch = branchEdit->text().trimmed();
-  if (url.isEmpty() || branch.isEmpty()) {
-    // Optionally show an error message
+  urlStr = urlEdit->text().trimmed();
+  branchStr = branchEdit->text().trimmed();
+  if (urlStr.isEmpty() || branchStr.isEmpty()) {
+    QMessageBox::warning(this, tr("Invalid Input"), tr("Both Git URL and branch must be provided."));
     return;
   }
   accept();

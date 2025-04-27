@@ -35,16 +35,20 @@ tools/op.sh setup
 git lfs pull
 ```
 
-**4. Activate a python shell**
+**Development Environment (Docker)**
 
-Activate a shell with the Python dependencies installed:
-``` bash
-source .venv/bin/activate
-```
+For a reproducible setup, build and run openpilot inside the Docker container described in the main README:
+```bash
+# 1. Build the image
+docker build -t openpilot-dev .
 
-**5. Build openpilot**
+# 2. Launch an interactive shell in-container
+docker run --rm -it \
+  -v $(pwd):/openpilot \
+  -w /openpilot \
+  openpilot-dev
 
-``` bash
+# 3. Inside container, build openpilot:
 scons -u -j$(nproc)
 ```
 

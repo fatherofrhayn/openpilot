@@ -18,6 +18,8 @@
 
 venv/
 .venv/
+.venv311/
+build/
 
 notebooks
 phone

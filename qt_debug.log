@@ -1,0 +1,104 @@
+2025-04-21T22:59:27: Populating font family aliases took 226 ms. Replace uses of missing font family "Noto Color Emoji" with one that exists to avoid this cost. 
+2025-04-21T22:59:28: DBus call error: "Not connected to D-Bus server"
+2025-04-21T22:59:28: DBus call error: "Not connected to D-Bus server"
+2025-04-21T22:59:28: SoftwareManagerPanel constructor entered
+2025-04-21T22:59:28: SoftwareManagerPanel ctor start
+2025-04-21T22:59:28: PathConfig: using CLI binary at: "/Users/jblair/Github/openpilot/fork_manager/fork_manager"
+2025-04-21T22:59:28: SoftwareManagerPanel: using CLI binary at: "/Users/jblair/Github/openpilot/fork_manager/fork_manager"
+2025-04-21T22:59:28: SoftwareManager::triggerUpdate (test log)
+2025-04-21T22:59:28: SoftwareManager::triggerUpdate called with type: 11 , ref: ""
+2025-04-21T22:59:28: SoftwareManager: CLI wrapper not executable, falling back to python3 with script: "/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh"
+2025-04-21T22:59:28: SoftwareManager: about to start process with program: "python3" , args: ("/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh", "profiles")
+2025-04-21T22:59:28: SoftwareManager: starting "python3" ("/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh", "profiles")
+2025-04-21T22:59:28: SoftwareManagerPanel ctor end
+2025-04-21T22:59:28: onManagerProfilesListed: ()
+2025-04-21T22:59:28: SoftwareManager::triggerUpdate (test log)
+2025-04-21T22:59:28: SoftwareManager::triggerUpdate called with type: 12 , ref: ""
+2025-04-21T22:59:28: SoftwareManager: CLI wrapper not executable, falling back to python3 with script: "/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh"
+2025-04-21T22:59:28: SoftwareManager: about to start process with program: "python3" , args: ("/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh", "list")
+2025-04-21T22:59:28: SoftwareManager: starting "python3" ("/Users/jblair/Github/openpilot/selfdrive/ui/qt/offroad/fork_cli_stub.sh", "list")
+2025-04-21T22:59:28: onManagerForksListed slot entered
+2025-04-21T22:59:28: Forks from CLI: ()
+2025-04-21T22:59:28: Forks from CLI: ()
+2025-04-21T22:59:28: Parsed fork entries: ()
+2025-04-21T22:59:28: onManagerForksListed: ()
+2025-04-21T22:59:57: No RSA private key found, please run manager.py or registration.py
+2025-04-26T01:03:22: Populating font family aliases took 137 ms. Replace uses of missing font family "Noto Color Emoji" with one that exists to avoid this cost. 
+2025-04-26T01:03:22: DBus call error: "Not connected to D-Bus server"
+2025-04-26T01:03:22: DBus call error: "Not connected to D-Bus server"
+2025-04-26T01:03:22: SoftwareManagerPanel constructor entered
+2025-04-26T01:03:22: SoftwareManagerPanel ctor start
+2025-04-26T01:03:22: PathConfig: using CLI binary at: "/Users/jblair/Github/openpilot/fork_manager/fork_manager"
+2025-04-26T01:03:22: SoftwareManagerPanel: using CLI binary at: "/Users/jblair/Github/openpilot/fork_manager/fork_manager"
+2025-04-26T01:03:22: SoftwareManager::triggerUpdate (test log)
+2025-04-26T01:03:22: SoftwareManager::triggerUpdate called with type: 11 , ref: ""
+2025-04-26T01:03:22: SoftwareManager: about to start process with program: "/Users/jblair/Github/openpilot/fork_manager/fork_manager" , args: ("profiles")
+2025-04-26T01:03:22: SoftwareManager: starting "/Users/jblair/Github/openpilot/fork_manager/fork_manager" ("profiles")
+2025-04-26T01:03:22: SoftwareManagerPanel ctor end
+2025-04-26T01:03:22: QProcess finished. Success: true , ExitCode: 0 , ExitStatus: QProcess::NormalExit
+2025-04-26T01:03:22: STDOUT: ()
+2025-04-26T01:03:22: STDERR: ()
+2025-04-26T01:03:22: onManagerProfilesListed: ()
+2025-04-26T01:03:22: SoftwareManager::triggerUpdate (test log)
+2025-04-26T01:03:22: SoftwareManager::triggerUpdate called with type: 12 , ref: ""
+2025-04-26T01:03:22: SoftwareManager: about to start process with program: "/Users/jblair/Github/openpilot/fork_manager/fork_manager" , args: ("list")
+2025-04-26T01:03:22: SoftwareManager: starting "/Users/jblair/Github/openpilot/fork_manager/fork_manager" ("list")
+2025-04-26T01:03:23: QProcess finished. Success: true , ExitCode: 0 , ExitStatus: QProcess::NormalExit
+2025-04-26T01:03:23: STDOUT: ()
+2025-04-26T01:03:23: STDERR: ()
+2025-04-26T01:03:23: onManagerForksListed slot entered
+2025-04-26T01:03:23: Forks from CLI: ()
+2025-04-26T01:03:23: Forks from CLI: ()
+2025-04-26T01:03:23: Parsed fork entries: ()
+2025-04-26T01:03:30: SoftwareManager::triggerUpdate (test log)
+2025-04-26T01:03:30: SoftwareManager::triggerUpdate called with type: 12 , ref: ""
+2025-04-26T01:03:30: SoftwareManager: about to start process with program: "/Users/jblair/Github/openpilot/fork_manager/fork_manager" , args: ("list")
+2025-04-26T01:03:30: SoftwareManager: starting "/Users/jblair/Github/openpilot/fork_manager/fork_manager" ("list")
+2025-04-26T01:03:30: QProcess finished. Success: true , ExitCode: 0 , ExitStatus: QProcess::NormalExit
+2025-04-26T01:03:30: STDOUT: ()
+2025-04-26T01:03:30: STDERR: ()
+2025-04-26T01:03:30: onManagerForksListed slot entered
+2025-04-26T01:03:30: Forks from CLI: ()
+2025-04-26T01:03:30: Forks from CLI: ()
+2025-04-26T01:03:30: Parsed fork entries: ()
+2025-04-26T01:03:47: SoftwareManager::triggerUpdate (test log)
+2025-04-26T01:03:47: SoftwareManager::triggerUpdate called with type: 12 , ref: ""
+2025-04-26T01:03:47: SoftwareManager: about to start process with program: "/Users/jblair/Github/openpilot/fork_manager/fork_manager" , args: ("list")
+2025-04-26T01:03:47: SoftwareManager: starting "/Users/jblair/Github/openpilot/fork_manager/fork_manager" ("list")
+2025-04-26T01:03:48: QProcess finished. Success: true , ExitCode: 0 , ExitStatus: QProcess::NormalExit
+2025-04-26T01:03:48: STDOUT: ()
+2025-04-26T01:03:48: STDERR: ()
+2025-04-26T01:03:48: onManagerForksListed slot entered
+2025-04-26T01:03:48: Forks from CLI: ()
+2025-04-26T01:03:48: Forks from CLI: ()
+2025-04-26T01:03:48: Parsed fork entries: ()
+2025-04-26T01:03:52: No RSA private key found, please run manager.py or registration.py
+2025-04-26T01:03:56: SoftwareManager::triggerUpdate (test log)
+2025-04-26T01:03:56: SoftwareManager::triggerUpdate called with type: 0 , ref: ""
+2025-04-26T01:03:56: SoftwareManager: about to start process with program: "/Users/jblair/Github/openpilot/fork_manager/fork_manager" , args: ("self-update", "--check")
+2025-04-26T01:03:56: SoftwareManager: starting "/Users/jblair/Github/openpilot/fork_manager/fork_manager" ("self-update", "--check")
+2025-04-26T01:03:56: QProcess finished. Success: false , ExitCode: 2 , ExitStatus: QProcess::NormalExit
+2025-04-26T01:03:56: STDOUT: ()
+2025-04-26T01:03:56: STDERR: ()
+2025-04-26T01:03:57: SoftwareManager::triggerUpdate (test log)
+2025-04-26T01:03:57: SoftwareManager::triggerUpdate called with type: 13 , ref: ""
+2025-04-26T01:03:57: SoftwareManager: about to start process with program: "/Users/jblair/Github/openpilot/fork_manager/fork_manager" , args: ("disk-usage")
+2025-04-26T01:03:57: SoftwareManager: starting "/Users/jblair/Github/openpilot/fork_manager/fork_manager" ("disk-usage")
+2025-04-26T01:03:58: QProcess finished. Success: true , ExitCode: 0 , ExitStatus: QProcess::NormalExit
+2025-04-26T01:03:58: STDOUT: ()
+2025-04-26T01:03:58: STDERR: ()
+2025-04-26T01:04:22: No RSA private key found, please run manager.py or registration.py
+2025-04-26T01:04:26: SoftwareManager::triggerUpdate (test log)
+2025-04-26T01:04:26: SoftwareManager::triggerUpdate called with type: 2 , ref: "https://github.com/fatherofrhayn/openpilot.git::ccnc-aol"
+2025-04-26T01:04:26: SoftwareManager: about to start process with program: "/Users/jblair/Github/openpilot/fork_manager/fork_manager" , args: ("install", "https://github.com/fatherofrhayn/openpilot.git", "ccnc-aol")
+2025-04-26T01:04:26: SoftwareManager: starting "/Users/jblair/Github/openpilot/fork_manager/fork_manager" ("install", "https://github.com/fatherofrhayn/openpilot.git", "ccnc-aol")
+2025-04-26T01:04:52: No RSA private key found, please run manager.py or registration.py
+2025-04-26T01:05:22: No RSA private key found, please run manager.py or registration.py
+2025-04-26T01:05:52: No RSA private key found, please run manager.py or registration.py
+2025-04-26T02:42:11: SoftwareManager::triggerUpdate (test log)
+2025-04-26T02:42:11: SoftwareManager::triggerUpdate called with type: 0 , ref: ""
+2025-04-26T02:42:11: SoftwareManager: QProcess is already running, skipping triggerUpdate for type: 0
+2025-04-26T02:57:26: SoftwareManager::triggerUpdate (test log)
+2025-04-26T02:57:26: SoftwareManager::triggerUpdate called with type: 0 , ref: ""
+2025-04-26T02:57:26: SoftwareManager: QProcess is already running, skipping triggerUpdate for type: 0
+2025-04-26T03:01:45: QProcess: Destroyed while process ("/Users/jblair/Github/openpilot/fork_manager/fork_manager") is still running.

@@ -1,0 +1,107 @@
+2025-04-24 22:37:00,738 ERROR Attempt 1 for install_fork failed
+Traceback (most recent call last):
+  File "/Users/jblair/Github/openpilot/fork_manager/retry.py", line 16, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 170, in install_fork
+    raise InstallError(f"Invalid fork name: {name}")
+fork_manager.fork_installer.InstallError: Invalid fork name: invalid name!
+2025-04-24 22:37:00,741 INFO Attempting self-update...
+2025-04-24 22:37:00,741 ERROR Error: Update repository URL not configured.
+2025-04-24 22:37:00,792 INFO {"timestamp": "2025-04-25T02:37:00Z", "action": "get_remote_version_error", "details": {"url": "/commits/manager", "error": "Invalid URL '/commits/manager': No scheme supplied. Perhaps you meant https:///commits/manager?"}}
+2025-04-24 22:37:00,793 INFO Local version: a0e4b9d9f2d05e63ce87a490835256b3646d613c
+2025-04-24 22:37:00,793 INFO Remote version: None
+2025-04-24 22:37:00,793 INFO Could not check for updates (remote fetch failed).
+2025-04-24 22:37:01,740 INFO Retrying install_fork (attempt 2/3)
+2025-04-24 22:37:01,741 ERROR Attempt 2 for install_fork failed
+Traceback (most recent call last):
+  File "/Users/jblair/Github/openpilot/fork_manager/retry.py", line 16, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 170, in install_fork
+    raise InstallError(f"Invalid fork name: {name}")
+fork_manager.fork_installer.InstallError: Invalid fork name: invalid name!
+2025-04-24 22:37:02,742 INFO Retrying install_fork (attempt 3/3)
+2025-04-24 22:37:02,742 ERROR Attempt 3 for install_fork failed
+Traceback (most recent call last):
+  File "/Users/jblair/Github/openpilot/fork_manager/retry.py", line 16, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 170, in install_fork
+    raise InstallError(f"Invalid fork name: {name}")
+fork_manager.fork_installer.InstallError: Invalid fork name: invalid name!
+2025-04-24 22:37:02,742 CRITICAL install_fork failed after 3 attempts, performing rollback
+2025-04-26 01:04:52,921 ERROR Attempt 1 for install_fork failed
+Traceback (most recent call last):
+  File "/Users/jblair/Github/openpilot/fork_manager/retry.py", line 16, in wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 211, in install_fork
+    _log_action("install", {
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 49, in _log_action
+    f.write(json.dumps(log_entry) + "\n")
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py", line 231, in dumps
+    return _default_encoder.encode(obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.10/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type PosixPath is not JSON serializable
+2025-04-26 01:04:53,929 INFO Retrying install_fork (attempt 2/3)
+2025-04-26 02:44:09,966 INFO {"timestamp": "2025-04-26T06:44:09Z", "action": "get_remote_version_error", "details": {"error": "requests module not available"}}
+2025-04-26 02:44:09,966 INFO Local version: a0e4b9d9f2d05e63ce87a490835256b3646d613c
+2025-04-26 02:44:09,967 INFO Remote version: None
+2025-04-26 02:44:09,967 INFO Could not check for updates (remote fetch failed).
+2025-04-26 02:44:09,970 ERROR Attempt 1 for install_fork failed
+Traceback (most recent call last):
+  File "/Users/jblair/Github/openpilot/fork_manager/retry.py", line 16, in wrapper
+    return fn(*args, **kwargs)
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 178, in install_fork
+    ans = _confirm_action(f"Fork directory {target_path} already exists. Overwrite?", prompt_handler=prompt_handler)
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 400, in _confirm_action
+    from distutils.util import strtobool
+ModuleNotFoundError: No module named 'distutils'
+2025-04-26 02:44:10,979 INFO Retrying install_fork (attempt 2/3)
+2025-04-26 02:44:10,979 ERROR Attempt 2 for install_fork failed
+Traceback (most recent call last):
+  File "/Users/jblair/Github/openpilot/fork_manager/retry.py", line 16, in wrapper
+    return fn(*args, **kwargs)
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 178, in install_fork
+    ans = _confirm_action(f"Fork directory {target_path} already exists. Overwrite?", prompt_handler=prompt_handler)
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 400, in _confirm_action
+    from distutils.util import strtobool
+ModuleNotFoundError: No module named 'distutils'
+2025-04-26 02:44:11,981 INFO Retrying install_fork (attempt 3/3)
+2025-04-26 02:44:11,981 ERROR Attempt 3 for install_fork failed
+Traceback (most recent call last):
+  File "/Users/jblair/Github/openpilot/fork_manager/retry.py", line 16, in wrapper
+    return fn(*args, **kwargs)
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 178, in install_fork
+    ans = _confirm_action(f"Fork directory {target_path} already exists. Overwrite?", prompt_handler=prompt_handler)
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 400, in _confirm_action
+    from distutils.util import strtobool
+ModuleNotFoundError: No module named 'distutils'
+2025-04-26 02:44:11,982 CRITICAL install_fork failed after 3 attempts, performing rollback
+2025-04-26 02:44:11,982 ERROR Rollback function failed
+Traceback (most recent call last):
+  File "/Users/jblair/Github/openpilot/fork_manager/retry.py", line 16, in wrapper
+    return fn(*args, **kwargs)
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 178, in install_fork
+    ans = _confirm_action(f"Fork directory {target_path} already exists. Overwrite?", prompt_handler=prompt_handler)
+  File "/Users/jblair/Github/openpilot/fork_manager/fork_installer.py", line 400, in _confirm_action
+    from distutils.util import strtobool
+ModuleNotFoundError: No module named 'distutils'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jblair/Github/openpilot/fork_manager/retry.py", line 27, in wrapper
+    rollback_fn(*args, **kwargs)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+TypeError: _rollback_install() got an unexpected keyword argument 'prompt_handler'

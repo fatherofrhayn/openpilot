@@ -47,3 +47,10 @@ ScrollView::ScrollView(QWidget *w, QWidget *parent) : QScrollArea(parent) {
 void ScrollView::hideEvent(QHideEvent *e) {
   verticalScrollBar()->setValue(0);
 }
+
+void ScrollView::resizeEvent(QResizeEvent *e) {
+  QScrollArea::resizeEvent(e);
+  if (widget()) {
+    widget()->setFixedWidth(viewport()->width());
+  }
+}

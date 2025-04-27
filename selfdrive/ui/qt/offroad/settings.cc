@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <QDebug>
+#include <QSizePolicy>
 
 #include "common/watchdog.h"
 #include "common/util.h"
@@ -15,6 +16,7 @@
 #include "selfdrive/ui/qt/widgets/scrollview.h"
 #include "selfdrive/ui/qt/offroad/developer_panel.h"
 #include "selfdrive/ui/qt/offroad/firehose.h"
+#include "selfdrive/ui/qt/offroad/SoftwareManagerPanel.h"
 
 TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
   // param, title, desc, icon
@@ -381,10 +383,10 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
   QObject::connect(uiState()->prime_state, &PrimeState::changed, networking, &Networking::setPrimeType);
 
   QList<QPair<QString, QWidget *>> panels = {
+    {tr("Software Manager"), new SoftwareManagerPanel(this)},
     {tr("Device"), device},
     {tr("Network"), networking},
     {tr("Toggles"), toggles},
-    {tr("Software"), new SoftwarePanel(this)},
     {tr("Firehose"), new FirehosePanel(this)},
     {tr("Developer"), new DeveloperPanel(this)},
   };
@@ -399,7 +401,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
         color: grey;
         border: none;
         background: none;
-        font-size: 65px;
+        font-size: 40px;
         font-weight: 500;
       }
       QPushButton:checked {
@@ -409,12 +411,14 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
         color: #ADADAD;
       }
     )");
-    btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     nav_btns->addButton(btn);
     sidebar_layout->addWidget(btn, 0, Qt::AlignRight);
 
-    const int lr_margin = name != tr("Network") ? 50 : 0;  // Network panel handles its own margins
+    // default side margins for all panels except Network
+    const int lr_margin = name != tr("Network") ? 50 : 0;
     panel->setContentsMargins(lr_margin, 25, lr_margin, 25);
+    panel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     ScrollView *panel_frame = new ScrollView(panel, this);
     panel_widget->addWidget(panel_frame);
@@ -422,16 +426,29 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     QObject::connect(btn, &QPushButton::clicked, [=, w = panel_frame]() {
       btn->setChecked(true);
       panel_widget->setCurrentWidget(w);
+      QWidget *p = w->widget();
+      if (p) {
+        qWarning() << "Panel" << btn->text() << "scrollview size:" << w->size()
+                   << "inner widget size:" << p->size()
+                   << "contentsMargins:" << p->contentsMargins();
+      }
     });
   }
   sidebar_layout->setContentsMargins(50, 50, 100, 50);
 
+  // wrap sidebar in a scroll view so all panel buttons are reachable
+  ScrollView *sidebar_scroll = new ScrollView(sidebar_widget, this);
+  sidebar_scroll->setFrameShape(QFrame::NoFrame);
+  sidebar_scroll->setFixedWidth(500);
+  // show vertical scrollbar so users can scroll to Manager
+  sidebar_scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+  sidebar_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
   // main settings layout, sidebar + main panel
   QHBoxLayout *main_layout = new QHBoxLayout(this);
 
-  sidebar_widget->setFixedWidth(500);
-  main_layout->addWidget(sidebar_widget);
-  main_layout->addWidget(panel_widget);
+  main_layout->addWidget(sidebar_scroll);
+  main_layout->addWidget(panel_widget, 1);
 
   setStyleSheet(R"(
     * {

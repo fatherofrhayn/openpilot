@@ -4,12 +4,11 @@ health.py - Health monitoring, self-healing, and corruption detection for Fork M
 """
 
 import os
-import sys
 import json
 import time
 import hashlib
 
-from .config import FORK_MANAGER_ROOT, FORKS_DIR, LOGS_DIR, OPENPILOT_SYMLINK, SETTINGS_DIR # Use relative import
+from .config import FORKS_DIR, LOGS_DIR, OPENPILOT_SYMLINK  # Use relative import
 
 def _log_action(action, details):
     os.makedirs(LOGS_DIR, exist_ok=True) # Ensure log dir exists
@@ -19,7 +18,7 @@ def _log_action(action, details):
         "details": details
     }
     log_path = os.path.join(LOGS_DIR, "health.log")
-    with open(log_path, "a") as f:
+    with open(log_path, "a", encoding='utf-8') as f:
         f.write(json.dumps(log_entry) + "\n")
 
 def _hash_file(path):
@@ -34,7 +33,7 @@ def _hash_file(path):
 
 def _hash_dir(path):
     hashes = {}
-    for root, dirs, files in os.walk(path):
+    for root, _, files in os.walk(path):  # dirs unused - replaced with _
         for name in files:
             file_path = os.path.join(root, name)
             rel_path = os.path.relpath(file_path, path)
@@ -84,7 +83,7 @@ def _check_settings_integrity():
                 issues.append(f"{entry} {backup} missing integrity.json")
                 continue
             try:
-                with open(integrity_file) as f:
+                with open(integrity_file, encoding='utf-8') as f:
                     expected_hashes = json.load(f)
                 for name, expected in expected_hashes.items():
                     file_path = os.path.join(backup_dir, name)
@@ -94,11 +93,21 @@ def _check_settings_integrity():
                         actual = _hash_file(file_path)
                     if actual != expected:
                         issues.append(f"{entry} {backup} integrity check failed for {name}")
-            except Exception as e:
+            except (json.JSONDecodeError, OSError) as e:
                 issues.append(f"{entry} {backup} integrity check error: {e}")
     return issues
 
 def run_health_check():
+    """Run comprehensive health checks on the Fork Manager system.
+
+    Checks include:
+    - Symlink validity
+    - Fork directory structure
+    - Settings backup integrity
+
+    Returns:
+        None: Results are printed to console and logged
+    """
     print("Running Fork Manager health check...")
     issues = []
     # Check symlink
@@ -127,27 +136,43 @@ def run_health_check():
             print(f"  - {i}")
         _log_action("health_check", {"result": "issues", "issues": issues})
 
+def _repair_symlink(repaired):
+    """Attempt to repair the openpilot symlink."""
+    ok, _ = _check_symlink()
+    if ok:
+        return
+
+    if not os.path.isdir(FORKS_DIR):
+        return
+
+    for entry in os.listdir(FORKS_DIR):
+        path = os.path.join(FORKS_DIR, entry)
+        if not os.path.isdir(os.path.join(path, "selfdrive")):
+            continue
+
+        try:
+            tmp_link = OPENPILOT_SYMLINK + ".tmp"
+            if os.path.islink(tmp_link) or os.path.exists(tmp_link):
+                os.unlink(tmp_link)
+            os.symlink(path, tmp_link)
+            os.replace(tmp_link, OPENPILOT_SYMLINK)
+            repaired.append(f"Symlink repaired to {path}")
+            return
+        except OSError as e:
+            repaired.append(f"Failed to repair symlink: {e}")
+
 def repair_all():
+    """Attempt automatic repair of common Fork Manager issues.
+
+    Repairs include:
+    - Recreating broken/missing symlink
+    - Creating missing directories
+    """
     print("Attempting auto-repair of common issues...")
     repaired = []
+
     # Symlink repair
-    ok, msg = _check_symlink()
-    if not ok:
-        # Try to find a valid fork to relink
-        if os.path.isdir(FORKS_DIR):
-            for entry in os.listdir(FORKS_DIR):
-                path = os.path.join(FORKS_DIR, entry)
-                if os.path.isdir(os.path.join(path, "selfdrive")):
-                    try:
-                        tmp_link = OPENPILOT_SYMLINK + ".tmp"
-                        if os.path.islink(tmp_link) or os.path.exists(tmp_link):
-                            os.unlink(tmp_link)
-                        os.symlink(path, tmp_link)
-                        os.replace(tmp_link, OPENPILOT_SYMLINK)
-                        repaired.append(f"Symlink repaired to {path}")
-                        break
-                    except Exception as e:
-                        repaired.append(f"Failed to repair symlink: {e}")
+    _repair_symlink(repaired)
     # Settings/dirs repair (just recreate missing dirs)
     if not os.path.isdir(FORKS_DIR):
         os.makedirs(FORKS_DIR, exist_ok=True)

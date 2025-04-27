@@ -22,6 +22,6 @@ private:
   QLineEdit *urlEdit;
   QLineEdit *branchEdit;
   QPushButton *installBtn;
-  QString url;
-  QString branch;
+  QString urlStr;
+  QString branchStr;
 };

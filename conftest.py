@@ -4,9 +4,15 @@ import os
 import pytest
 import random
 
-from openpilot.common.prefix import OpenpilotPrefix
-from openpilot.system.manager import manager
-from openpilot.system.hardware import TICI, HARDWARE
+try:
+    from openpilot.common.prefix import OpenpilotPrefix
+    from openpilot.system.manager import manager
+    from openpilot.system.hardware import TICI, HARDWARE
+except ImportError:
+    OpenpilotPrefix = None
+    manager = None
+    TICI = False
+    HARDWARE = None
 
 # TODO: pytest-cpp doesn't support FAIL, and we need to create test translations in sessionstart
 # pending https://github.com/pytest-dev/pytest-cpp/pull/147
@@ -49,24 +55,24 @@ def clean_env():
 @pytest.fixture(scope="function", autouse=True)
 def openpilot_function_fixture(request):
   random.seed(0)
-
+  # Skip Openpilot setup if not available
+  if OpenpilotPrefix is None:
+    yield
+    return
   with clean_env():
     # setup a clean environment for each test
     with OpenpilotPrefix(shared_download_cache=request.node.get_closest_marker("shared_download_cache") is not None) as prefix:
       prefix = os.environ["OPENPILOT_PREFIX"]
-
       yield
-
       # ensure the test doesn't change the prefix
       assert "OPENPILOT_PREFIX" in os.environ and prefix == os.environ["OPENPILOT_PREFIX"]
-
-    # cleanup any started processes
+  # cleanup any started processes
+  if manager:
     manager.manager_cleanup()
-
-    # some processes disable gc for performance, re-enable here
-    if not gc.isenabled():
-      gc.enable()
-      gc.collect()
+  # some processes disable gc for performance, re-enable here
+  if not gc.isenabled():
+    gc.enable()
+    gc.collect()
 
 # If you use setUpClass, the environment variables won't be cleared properly,
 # so we need to hook both the function and class pytest fixtures
@@ -81,8 +87,9 @@ def tici_setup_fixture(request, openpilot_function_fixture):
   """Ensure a consistent state for tests on-device. Needs the openpilot function fixture to run first."""
   if 'skip_tici_setup' in request.keywords:
     return
-  HARDWARE.initialize_hardware()
-  HARDWARE.set_power_save(False)
+  if HARDWARE:
+    HARDWARE.initialize_hardware()
+    HARDWARE.set_power_save(False)
   os.system("pkill -9 -f athena")
 
 
