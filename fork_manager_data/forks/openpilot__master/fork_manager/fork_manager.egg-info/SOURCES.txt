@@ -1,9 +1,0 @@
-README.md
-setup.py
-fork_manager.egg-info/PKG-INFO
-fork_manager.egg-info/SOURCES.txt
-fork_manager.egg-info/dependency_links.txt
-fork_manager.egg-info/entry_points.txt
-fork_manager.egg-info/requires.txt
-fork_manager.egg-info/top_level.txt
-tests/test_cli_wrapper.py

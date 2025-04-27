@@ -1,2 +1,0 @@
-[console_scripts]
-fork_manager = fork_manager.cli:main
